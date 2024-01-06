@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/db_name?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+
+  mail:
+    host: smtp.126.com
+    username: mojing_live@126.com
+    password: xxxxxxxxxxxxxx
+    port: 465
+    properties:
+      from: mojing.live
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+
+  data:
+    redis:
+      host: 47.100.205.19
+      database: 0
+      port: 6379
+      password: xxxxxxxx
+
+
+
+
