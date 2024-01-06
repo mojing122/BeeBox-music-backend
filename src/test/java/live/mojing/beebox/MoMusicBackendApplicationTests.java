@@ -1,7 +1,7 @@
-package live.mojing.momusic;
+package live.mojing.beebox;
 
-import live.mojing.momusic.entity.auth.Account;
-import live.mojing.momusic.mapper.AccountMapper;
+import live.mojing.beebox.entity.auth.Account;
+import live.mojing.beebox.mapper.AccountMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
