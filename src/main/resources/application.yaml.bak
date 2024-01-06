@@ -8,7 +8,7 @@ spring:
   mail:
     host: smtp.126.com
     username: mojing_live@126.com
-    password: xxxxxxxxxxxxxx
+    password: xxxx
     port: 465
     properties:
       from: mojing.live
