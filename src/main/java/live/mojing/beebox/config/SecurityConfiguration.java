@@ -24,6 +24,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -39,6 +41,8 @@ public class SecurityConfiguration {
                                            PersistentTokenRepository tokenRepository) throws Exception{
         return http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/", "/index").hasRole("user")
+                        .requestMatchers("/api/user/**").hasRole("admin")
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )

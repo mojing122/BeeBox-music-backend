@@ -53,7 +53,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         return User
                 .withUsername(account.getUsername())
                 .password(account.getPassword())
-                .roles("user")
+                .roles("user","admin")
                 .build();
     }
 
