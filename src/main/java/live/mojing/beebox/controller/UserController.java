@@ -1,9 +1,7 @@
 package live.mojing.beebox.controller;
 
-import jakarta.annotation.security.RolesAllowed;
-import live.mojing.beebox.entity.RestBean;
-import live.mojing.beebox.entity.user.AccountUser;
-import org.springframework.security.access.prepost.PreAuthorize;
+import live.mojing.beebox.mapper.entity.RestBean;
+import live.mojing.beebox.mapper.entity.user.AccountUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

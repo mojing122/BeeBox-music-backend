@@ -1,7 +1,7 @@
 package live.mojing.beebox.service.impl;
 
 import jakarta.annotation.Resource;
-import live.mojing.beebox.entity.auth.Account;
+import live.mojing.beebox.mapper.entity.auth.Account;
 import live.mojing.beebox.mapper.AccountMapper;
 import live.mojing.beebox.service.AuthorizeService;
 import org.springframework.beans.factory.annotation.Value;

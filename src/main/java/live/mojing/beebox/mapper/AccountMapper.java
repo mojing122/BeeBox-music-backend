@@ -1,8 +1,8 @@
 package live.mojing.beebox.mapper;
 
-import live.mojing.beebox.entity.auth.Account;
+import live.mojing.beebox.mapper.entity.auth.Account;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import live.mojing.beebox.entity.user.AccountUser;
+import live.mojing.beebox.mapper.entity.user.AccountUser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

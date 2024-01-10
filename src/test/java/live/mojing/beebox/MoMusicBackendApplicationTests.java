@@ -1,6 +1,6 @@
 package live.mojing.beebox;
 
-import live.mojing.beebox.entity.auth.Account;
+import live.mojing.beebox.mapper.entity.auth.Account;
 import live.mojing.beebox.mapper.AccountMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

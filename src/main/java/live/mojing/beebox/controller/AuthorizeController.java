@@ -3,7 +3,7 @@ package live.mojing.beebox.controller;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Pattern;
-import live.mojing.beebox.entity.RestBean;
+import live.mojing.beebox.mapper.entity.RestBean;
 import live.mojing.beebox.service.AuthorizeService;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;

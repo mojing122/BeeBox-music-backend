@@ -1,4 +1,4 @@
-package live.mojing.beebox.entity;
+package live.mojing.beebox.mapper.entity;
 
 import lombok.Data;
 

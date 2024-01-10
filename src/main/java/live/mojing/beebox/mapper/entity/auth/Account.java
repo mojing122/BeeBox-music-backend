@@ -1,4 +1,4 @@
-package live.mojing.beebox.entity.auth;
+package live.mojing.beebox.mapper.entity.auth;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

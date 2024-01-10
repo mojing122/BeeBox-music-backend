@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import live.mojing.beebox.entity.RestBean;
+import live.mojing.beebox.mapper.entity.RestBean;
 import live.mojing.beebox.service.AuthorizeService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +24,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -40,31 +38,40 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            PersistentTokenRepository tokenRepository) throws Exception{
         return http
+                // 配置请求的权限
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/index").hasRole("user")
-                        .requestMatchers("/api/user/**").hasRole("admin")
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/", "/index").hasRole("user")  // 用户角色为"user"可以访问 / 和 /index
+                        .requestMatchers("/api/user/**").hasRole("admin")  // 用户角色为 "admin"可以访问 /api/user/**
+                        .requestMatchers("/api/auth/**").permitAll()  // 所有用户都可以访问 /api/auth/**
+                        .anyRequest().authenticated()  // 其他所有请求需要进行认证
                 )
+                // 配置登录功能
                 .formLogin(formLogin -> formLogin
-                        .loginProcessingUrl("/api/auth/login")
-                        .successHandler(this::onAuthenticationSuccess)
-                        .failureHandler(this::onAuthenticationFailure)
+                        .loginProcessingUrl("/api/auth/login")  // 配置登录表单提交的URL
+                        .successHandler(this::onAuthenticationSuccess)  // 登录成功时的处理器
+                        .failureHandler(this::onAuthenticationFailure)  // 登录失败时的处理器
                 )
+                // 配置登出功能
                 .logout(logout -> logout
-                        .logoutUrl("/api/auth/logout")
-                        .logoutSuccessHandler(this::onAuthenticationSuccess)
+                        .logoutUrl("/api/auth/logout")  // 配置登出的URL
+                        .logoutSuccessHandler(this::onAuthenticationSuccess)  // 登出成功时的处理器
                 )
+                // 配置记住我功能
                 .rememberMe(
                         rememberMe -> rememberMe
-                                .rememberMeParameter("remember")
-                                .tokenRepository(tokenRepository)
-                                .tokenValiditySeconds(3600 * 24 * 7)
+                                .rememberMeParameter("remember")  // 配置记住我提交的参数名
+                                .tokenRepository(tokenRepository)  // 配置记住我功能使用的tokenRepository
+                                .tokenValiditySeconds(3600 * 24 * 7)  // 配置token的有效时长
                 )
+                // 配置用户认证业务对象
                 .userDetailsService(authorizeService)
+                // 配置异常处理
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(this::commence))
+                        .authenticationEntryPoint(this::commence)
+                )
+                // 禁用跨站请求伪造保护
                 .csrf(AbstractHttpConfigurer::disable)
+                // 配置跨域资源共享
                 .cors(cors -> cors.configurationSource(this.corsConfigurationSource()))
                 .build();
     }
