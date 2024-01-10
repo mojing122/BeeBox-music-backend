@@ -15,10 +15,4 @@ public class UserController {
         return RestBean.success(user);
     }
 
-
-    @GetMapping("/get-user-test")
-    public RestBean<AccountUser> getUserTest(@SessionAttribute("account") AccountUser user){
-        return RestBean.success(user);
-    }
-
 }
