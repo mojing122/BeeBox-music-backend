@@ -15,7 +15,7 @@ public interface MusicService{
 
     JudgedMusic findMusicById(Integer userid, Integer musicid);
 
-    int insertMusic(String name,String cover,int length,String fileUrl);
+    int insertMusic(String name,String cover,int length,String fileUrl,Integer artistId);
 
     int insertArtist(String name,String desc);
 

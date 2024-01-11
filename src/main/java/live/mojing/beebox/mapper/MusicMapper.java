@@ -41,9 +41,9 @@ public interface MusicMapper{
          * @param fileUrl
          * @return
          */
-        @Insert("insert into db_music (name,cover,length,fileUrl) \n" +
-                "values (#{name}, #{cover},#{length},#{fileUrl})")
-        int insertMusic(String name,String cover,int length,String fileUrl);
+        @Insert("insert into db_music (name,cover,length,file_url,artist_id) \n" +
+                "values (#{name}, #{cover},#{length},#{fileUrl},#{artistId})")
+        int insertMusic(String name,String cover,int length,String fileUrl,Integer artistId);
 
         /**
          *  通过音乐名查找音乐
@@ -62,12 +62,14 @@ public interface MusicMapper{
         Artist findArtistById(Integer artistid);
 
         /**
-         *  通过id查询艺术家
+         *  通过name查询艺术家
          * @param artistname
          * @return
          */
         @Select("select * from db_artist where name =#{artistname}")
         Artist findArtistByName(String artistname);
+
+
 
         /**
          *   插入艺术家
@@ -75,7 +77,7 @@ public interface MusicMapper{
          * @param desc
          * @return
          */
-        @Insert("insert into db_music (name,desc) \n" +
+        @Insert("insert into db_artist (name,description) \n" +
                 "values (#{name}, #{desc})")
         int insertArtist(String name,String desc);
 

@@ -27,8 +27,8 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public int insertMusic(String name,String cover,int length,String fileUrl){
-        int flag=musicMapper.insertMusic(name,cover,length,fileUrl);
+    public int insertMusic(String name,String cover,int length,String fileUrl,Integer artistId){
+        int flag=musicMapper.insertMusic(name,cover,length,fileUrl,artistId);
         return flag;
     }
 

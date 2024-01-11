@@ -6,5 +6,5 @@ import lombok.Data;
 public class Artist {
     Integer id;
     String name;
-    String desc;
+    String description;
 }
