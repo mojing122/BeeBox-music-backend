@@ -1,6 +1,7 @@
 package live.mojing.beebox.service;
 
 import live.mojing.beebox.mapper.MusicMapper;
+import live.mojing.beebox.mapper.entity.Artist;
 import live.mojing.beebox.mapper.entity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import org.apache.ibatis.annotations.Param;
@@ -14,8 +15,14 @@ public interface MusicService{
 
     JudgedMusic findMusicById(Integer userid, Integer musicid);
 
-    int insert(String name,String cover,int length,String fileUrl);
+    int insertMusic(String name,String cover,int length,String fileUrl);
 
-    public List<Music> selectBytitle(String musicName);
+    int insertArtist(String name,String desc);
+
+    List<Music> selectBytitle(String musicName);
+
+    Artist findArtistById(Integer artistid);
+
+    Artist findArtistByName(String artistname);
 }
 

@@ -12,6 +12,7 @@ public class Music {
     Integer id;
     String name;
     String cover;
+    Integer artistId;
     Integer length;
     String fileUrl;
     Boolean isLiked;
