@@ -25,6 +25,18 @@ public interface MusicMapper{
                 "    m.id = #{musicid};")
         JudgedMusic findMusicById(Integer userid, Integer musicid);
 
-//        @Select("select * from db_music where name = #{musicName}")
-//        public List<Music> findAllMusicByName(String musicName);
+        /**
+         *  插入音乐
+         * @param name
+         * @param cover
+         * @param length
+         * @param fileUrl
+         * @return
+         */
+        @Insert("insert into db_music (name,cover,length,fileUrl) \n" +
+                "values (#{name}, #{cover},#{length},#{fileUrl})")
+        int insert(String name,String cover,int length,String fileUrl);
+
+        @Select("select * from db_music where name = #{musicName}")
+        public List<Music> selectBytitle(String musicName);
 }

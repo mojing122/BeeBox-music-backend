@@ -14,7 +14,8 @@ public interface MusicService{
 
     JudgedMusic findMusicById(Integer userid, Integer musicid);
 
-//    List<Music> findAllMusicByName(String musicName) throws UsernameNotFoundException;
+    int insert(String name,String cover,int length,String fileUrl);
 
+    public List<Music> selectBytitle(String musicName);
 }
 
