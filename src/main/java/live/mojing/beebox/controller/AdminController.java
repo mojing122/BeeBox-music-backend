@@ -36,39 +36,36 @@ public class AdminController {
     /**
      *  上传音乐
      *  请求路径：/music/upload
-     * @param file 上传歌曲
-     * @param request 请求，验证是否登录
-     * @param response
+     * @param file
+     * @param cover
+     * @param length
+     * @param name
+     * @param artist
      * @return 返回true表示上传成功，返回false表示上传失败
      */
     @PostMapping("/creat-music")
     public RestBean<String> insertMusic(
-            HttpServletRequest request,
-            HttpServletResponse response,
             @RequestParam("file") MultipartFile file,
             @RequestParam("cover") MultipartFile cover,
+            @RequestParam("name") String name,
             @RequestParam("artist") String artist,
             @RequestParam("length") Integer length
     )
     {
 
-        // 1. 检查是否登录
-        HttpSession session = request.getSession(false);
-        if(session == null || session.getAttribute("account")==null){
-            System.out.println("没有登录");
-            return  RestBean.failure(402,"请登录后再进行上传");
-        }
+//        HttpSession session = request.getSession(false);
 
         // 2. 获取的是文件的完整名称，包括文件名称+文件拓展名
         String fileNameAndType = file.getOriginalFilename();
+        String extMusic = "."+ fileNameAndType.split("\\.")[1];//后缀
 
         // 3. 查询数据库中是否存在当前要上传的音乐（歌曲名+歌手）
         /**
          *  获取标题（标题不包含后缀.mp3）
          *  使用 lastIndexOf 从后向前找第一个 .
          */
-        int index = fileNameAndType.lastIndexOf(".");
-        String name = fileNameAndType.substring(0,index);
+//        int index = fileNameAndType.lastIndexOf(".");
+//        String name = fileNameAndType.substring(0,index);
 
 
         // 使用 list 存放歌曲，获取歌曲名
@@ -88,7 +85,7 @@ public class AdminController {
         // 2. 数据上传到服务器
 
         // 上传文件路径
-        String path = SAVE_PATH+"/music"+fileNameAndType;
+        String path = SAVE_PATH+"/music/"+name+extMusic;
 
         // 上传音乐文件
         File dest = new File(path);
@@ -112,13 +109,13 @@ public class AdminController {
         //可以自己加一点校验 例如上传的是不是图片或者上传的文件是不是png格式等等 这里省略
         //获取原来的文件名和后缀
         String originalFilename = cover.getOriginalFilename();
-        String ext = "."+ originalFilename.split("\\.")[1];//后缀
+        String extCover = "."+ originalFilename.split("\\.")[1];//后缀
         //生成一个新的文件名（以防有重复的名字存在导致被覆盖）
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        String newName = uuid + ext;
+        String newName = uuid + extCover;
         //拼接图片上传的路径 url+图片名
         ApplicationHome applicationHome = new ApplicationHome(this.getClass());
-        String path_cover = SAVE_PATH+"/cover"+newName;
+        String path_cover = SAVE_PATH+"/cover/"+newName;
         try {
             file.transferTo(new File(path_cover));
         } catch (IOException e) {
@@ -174,13 +171,13 @@ public class AdminController {
                 // 数据插入成功
                 // 这里应该跳转到音乐列表页面
 //                response.sendRedirect("/list.html");
-                response.sendRedirect("/");
                 return RestBean.success("数据库上传成功");
             }else{
                 // 数据插入失败
                 return RestBean.failure(409,"数据库上传失败");
             }
-        }catch (BindingException | IOException e){
+        }catch (BindingException e){
+            //catch (BindingException | IOException e){
             // 数据库上传失败，将上传到文件夹中的数据删除
             dest.delete();
             e.printStackTrace();
