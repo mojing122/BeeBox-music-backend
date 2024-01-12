@@ -4,6 +4,7 @@ import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedPlayList;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
 import live.mojing.beebox.mapper.entity.RestBean;
+import live.mojing.beebox.mapper.entity.user.AccountUser;
 import live.mojing.beebox.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +38,11 @@ public class PlayListController {
     }
 
     @PostMapping("/get-music-by-playlistid")
-    public RestBean<JudgedPlayList> selectMusicInPlaylist(@RequestParam("accountId") Integer accountId,
-                                                       Integer playlistId){
+    public RestBean<JudgedPlayList> selectMusicInPlaylist(@SessionAttribute("account") AccountUser user,
+                                                          @RequestParam("playlistId") Integer playlistId){
+
+        int accountId = user.getId();
+
         //定义包含所需的各种信息的新歌单实体
         JudgedPlayList judgedPlayList=null;
 

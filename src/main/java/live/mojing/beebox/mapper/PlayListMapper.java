@@ -49,7 +49,7 @@ public interface PlayListMapper {
      * @param playlistId
      * @return
      */
-    @Select("select * from db_playlist where playlistid = #{playlistId}")
+    @Select("select * from db_playlist where id = #{playlistId}")
     PlayList findPlaylistById(Integer playlistId);
 
     /**
