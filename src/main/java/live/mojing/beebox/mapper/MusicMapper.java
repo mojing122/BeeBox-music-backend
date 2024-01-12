@@ -12,7 +12,7 @@ import java.util.List;
 public interface MusicMapper{
         /**
          *  根据用户id和音乐id查找音乐并判断该音乐是否被喜欢
-         * @param userid
+         * @param accountid
          * @param musicid
          * @return
          */

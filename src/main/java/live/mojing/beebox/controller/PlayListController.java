@@ -1,5 +1,6 @@
 package live.mojing.beebox.controller;
 
+import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedPlayList;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
@@ -44,7 +45,7 @@ public class PlayListController {
         int accountId = user.getId();
 
         //定义包含所需的各种信息的新歌单实体
-        JudgedPlayList judgedPlayList = new JudgedPlayList();
+        JudgedPlayList judgedPlayList=new JudgedPlayList();
 
         //查找歌单中的音乐
         List<Music> musicList=playListService.selectMusicInPlaylistById(playlistId);
@@ -52,11 +53,14 @@ public class PlayListController {
         //设计歌单信息
         PlayList playList =playListService.findPlaylistById(playlistId);
         judgedPlayList.setName(playList.getName());
-        judgedPlayList.setDescription(playList.getDesc());
+        judgedPlayList.setDescription(playList.getDescription());
         judgedPlayList.setListlength(musicList.size());
         judgedPlayList.setCover(playList.getCover());
         if(accountId==playList.getCreatorid()){
             judgedPlayList.setEditable(true);
+        }
+        else{
+            judgedPlayList.setEditable(false);
         }
 
         //判断当前歌单是否被当前用户喜欢,设计收藏信息

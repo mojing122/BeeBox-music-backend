@@ -41,7 +41,12 @@ public interface PlayListMapper {
      * @param playlistId
      * @return
      */
-    @Select("select * from db_music_in_playlist where playlistid = #{playlistId}")
+//    @Select("select * from db_music_in_playlist where playlistid = #{playlistId}")
+    @Select("SELECT m.id, m.name, m.cover, m.artist_id, m.length, m.file_url, m.createTime, m.updateTime\n" +
+            "FROM db_music_in_playlist mip\n" +
+            "LEFT JOIN db_music m \n" +
+            "ON mip.musicid = m.id\n" +
+            "ORDER BY m.createTime DESC\n")
     List<Music> selectMusicInPlaylistById(Integer playlistId);
 
     /**
