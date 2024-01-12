@@ -32,9 +32,14 @@ public class PlayListServicelmpl implements PlayListService {
     }
 
     @Override
-    public List<Music> selectMusicInPlaylist(Integer playlistId){
-        List<Music> musicList=playListMapper.selectMusicInPlaylist(playlistId);
+    public List<Music> selectMusicInPlaylistById(Integer playlistId){
+        List<Music> musicList=playListMapper.selectMusicInPlaylistById(playlistId);
         return musicList;
+    }
+    @Override
+    public PlayList findPlaylistById(Integer playlistId){
+        PlayList playList=playListMapper.findPlaylistById(playlistId);
+        return playList;
     }
 
     @Override

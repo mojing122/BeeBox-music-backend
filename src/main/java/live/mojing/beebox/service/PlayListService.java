@@ -16,7 +16,9 @@ public interface PlayListService {
     //playlist插入
     int insertPlaylist(String name, String desc, Integer accountId, String cover);
 
-    List<Music> selectMusicInPlaylist(Integer playlistId);
+    List<Music> selectMusicInPlaylistById(Integer playlistId);
+
+    PlayList findPlaylistById(Integer playlistId);
 
     int judgePlaylistLiked(Integer accountId,Integer playlistId);
 }

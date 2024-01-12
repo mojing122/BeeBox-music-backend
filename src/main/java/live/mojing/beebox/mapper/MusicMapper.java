@@ -53,25 +53,19 @@ public interface MusicMapper{
         public List<Music> selectBytitle(String musicName);
 
         /**
-         *  根据歌曲的点赞量查找歌曲
-         * @param userid
-         * @param musicid
+         *  根据歌曲的点赞量查找规定数量歌曲歌曲
+         * @param limit
+         * @param offset
          * @return 歌曲列表
          */
-        @Select("SELECT \n" +
-                "    m.id,\n" +
-                "    m.name,\n" +
-                "    m.cover,\n" +
-                "    m.length,\n" +
-                "    m.file_url,\n" +
-                "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked\n" +
-                "FROM \n" +
-                "    db_music m\n" +
-                "LEFT JOIN \n" +
-                "    db_like l ON m.id = l.musicid AND l.userid = #{userid}\n" +
-                "WHERE \n" +
-                "    m.id = #{musicid};")
-        JudgedMusic findMusicByLikeCount(Integer userid, Integer musicid);
+        @Select("SELECT m.id, m.name, m.cover, m.length, m.file_url, m.artist_id, m.createTime, m.updateTime, COUNT(l.id) AS like_count\n" +
+                "FROM db_music m\n" +
+                "LEFT JOIN db_like l \n" +
+                "ON m.id = l.musicid\n" +
+                "GROUP BY m.id\n" +
+                "ORDER BY like_count DESC\n" +
+                "LIMIT #{limit} OFFSET #{offset};")
+        List<Music> findMusicByLikeCount(Integer limit, Integer offset);
 
 
         /**

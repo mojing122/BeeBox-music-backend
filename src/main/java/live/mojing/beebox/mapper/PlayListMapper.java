@@ -37,12 +37,20 @@ public interface PlayListMapper {
     int insertPlaylist(String name,String description, Integer creatorId, String cover, Date createTime, Date updateTime);
 
     /**
-     *  通过歌单名查找其中包含的音乐
+     *  通过歌单ID查找其中包含的音乐
      * @param playlistId
      * @return
      */
     @Select("select * from db_music_in_playlist where playlistid = #{playlistId}")
-    List<Music> selectMusicInPlaylist(Integer playlistId);
+    List<Music> selectMusicInPlaylistById(Integer playlistId);
+
+    /**
+     *  通过歌单ID查找其中包含的音乐
+     * @param playlistId
+     * @return
+     */
+    @Select("select * from db_playlist where playlistid = #{playlistId}")
+    PlayList findPlaylistById(Integer playlistId);
 
     /**
      *  判断当前歌单是否被当前用户收藏

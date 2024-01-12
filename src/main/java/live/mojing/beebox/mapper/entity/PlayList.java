@@ -8,7 +8,7 @@ public class PlayList {
     Integer id;
     String name;
     String desc;
-    Integer accountId;
+    Integer creatorid;
     String cover;
     private Date createTime;
     private Date updateTime;

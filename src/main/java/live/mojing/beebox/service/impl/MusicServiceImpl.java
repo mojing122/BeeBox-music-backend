@@ -18,7 +18,9 @@ public class MusicServiceImpl implements MusicService {
     @Autowired
     private MusicMapper musicMapper;
 
-
+    /**
+     * 音乐相关Service
+     */
     @Override
     public JudgedMusic findMusicById(Integer userid, Integer musicid) {
         JudgedMusic music=musicMapper.findMusicById(userid,musicid);
@@ -40,17 +42,27 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
+    public List<Music> selectBytitle(String musicName) {
+        List<Music> musicList= musicMapper.selectBytitle(musicName);
+        return musicList;
+    }
+
+    @Override
+    public List<Music> findMusicByLikeCount(Integer limit, Integer offset){
+        List<Music> musicList =musicMapper.findMusicByLikeCount(limit,offset);
+        return musicList;
+    }
+
+
+    /**
+     * 艺术家相关Service
+     */
+    @Override
     public int insertArtist(String name,String desc){
         Date createTime = new Date();
         Date updateTime = new Date();
         int flag=musicMapper.insertArtist(name,desc,createTime,updateTime);
         return flag;
-    }
-
-    @Override
-    public List<Music> selectBytitle(String musicName) {
-        List<Music> musicList= musicMapper.selectBytitle(musicName);
-        return musicList;
     }
 
     @Override

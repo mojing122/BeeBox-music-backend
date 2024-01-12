@@ -7,14 +7,12 @@ import java.util.List;
 
 @Data
 public class JudgedPlayList {
-//    Integer id;
-//    String name;
-//    String desc;
-//    Integer accountId;
-//    String cover;
-//    private Date createTime;
-//    private Date updateTime;
+    String name;
+    String description;
+    Integer listlength;
+    String cover;
+    int isLiked;
+    Boolean editable;
 
     List<Music> musicList;
-    int isLiked;
 }

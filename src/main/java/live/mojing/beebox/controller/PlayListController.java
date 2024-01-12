@@ -39,11 +39,27 @@ public class PlayListController {
     @PostMapping("/get-music-by-playlistid")
     public RestBean<JudgedPlayList> selectMusicInPlaylist(@RequestParam("accountId") Integer accountId,
                                                        Integer playlistId){
-        List<Music> musicList=playListService.selectMusicInPlaylist(playlistId);
-        int isLiked=playListService.judgePlaylistLiked(accountId,playlistId);
+        //定义包含所需的各种信息的新歌单实体
         JudgedPlayList judgedPlayList=null;
+
+        //查找歌单中的音乐
+        List<Music> musicList=playListService.selectMusicInPlaylistById(playlistId);
+
+        //设计歌单信息
+        PlayList playList =playListService.findPlaylistById(playlistId);
+        judgedPlayList.setName(playList.getName());
+        judgedPlayList.setDescription(playList.getDesc());
+        judgedPlayList.setListlength(musicList.size());
+        judgedPlayList.setCover(playList.getCover());
+        if(accountId==playList.getCreatorid()){
+            judgedPlayList.setEditable(true);
+        }
+
+        //判断当前歌单是否被当前用户喜欢,设计收藏信息
+        int isLiked=playListService.judgePlaylistLiked(accountId,playlistId);
         judgedPlayList.setMusicList(musicList);
         judgedPlayList.setIsLiked(isLiked);
+
         return RestBean.success(judgedPlayList);
     }
 
