@@ -94,6 +94,7 @@ public class AdminController {
         String originalFilename = cover.getOriginalFilename(); //获取原来的文件名和后缀
         String extCover = "."+ originalFilename.split("\\.")[1];//后缀
         String path_cover = SAVE_PATH+"/cover/"+originalFilename;//拼接图片上传的路径 url+图片名
+        String relative_path_cover="/cover/"+originalFilename;
         File destCover = new File(path_cover);
         if(!destCover.exists()){
             //如果路径不存在就创建目录
@@ -116,7 +117,7 @@ public class AdminController {
                 ret1=musicService.insertArtist(artist,desc);
             }
             Integer artistId=musicService.findArtistByName(artist).getId();
-            int ret = musicService.insertMusic(name,path_cover,length,RelativePath,artistId);
+            int ret = musicService.insertMusic(name,relative_path_cover,length,RelativePath,artistId);
             if(ret == 1 && ret1==1){// 数据插入成功
                 return RestBean.success("数据库上传成功");
             }else{

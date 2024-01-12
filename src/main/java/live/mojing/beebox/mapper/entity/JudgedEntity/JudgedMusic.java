@@ -1,4 +1,4 @@
-package live.mojing.beebox.mapper.entity;
+package live.mojing.beebox.mapper.entity.JudgedEntity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

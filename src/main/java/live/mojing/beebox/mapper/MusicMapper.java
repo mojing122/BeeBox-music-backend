@@ -1,13 +1,11 @@
 package live.mojing.beebox.mapper;
 
 import live.mojing.beebox.mapper.entity.Artist;
-import live.mojing.beebox.mapper.entity.JudgedMusic;
+import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
-import live.mojing.beebox.sqlbuilder.MusicBuilder;
 import org.apache.ibatis.annotations.*;
-import org.springframework.data.relational.core.sql.In;
-import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -28,10 +26,10 @@ public interface MusicMapper{
                 "FROM \n" +
                 "    db_music m\n" +
                 "LEFT JOIN \n" +
-                "    db_like l ON m.id = l.musicid AND l.userid = #{userid}\n" +
+                "    db_like l ON m.id = l.musicid AND l.accountid = #{accountid}\n" +
                 "WHERE \n" +
                 "    m.id = #{musicid};")
-        JudgedMusic findMusicById(Integer userid, Integer musicid);
+        JudgedMusic findMusicById(Integer accountid, Integer musicid);
 
         /**
          *  插入音乐
@@ -41,9 +39,10 @@ public interface MusicMapper{
          * @param fileUrl
          * @return
          */
-        @Insert("insert into db_music (name,cover,length,file_url,artist_id) \n" +
-                "values (#{name}, #{cover},#{length},#{fileUrl},#{artistId})")
-        int insertMusic(String name,String cover,int length,String fileUrl,Integer artistId);
+        @Insert("insert into db_music (name,cover,length,file_url,artist_id,createTime,updateTime) \n" +
+                "values (#{name}, #{cover},#{length},#{fileUrl},#{artistId},#{createTime},#{updateTime})")
+        int insertMusic(String name, String cover, int length, String fileUrl,
+                        Integer artistId, Date createTime,Date updateTime);
 
         /**
          *  通过音乐名查找音乐
@@ -52,6 +51,28 @@ public interface MusicMapper{
          */
         @Select("select * from db_music where name = #{musicName}")
         public List<Music> selectBytitle(String musicName);
+
+        /**
+         *  根据歌曲的点赞量查找歌曲
+         * @param userid
+         * @param musicid
+         * @return 歌曲列表
+         */
+        @Select("SELECT \n" +
+                "    m.id,\n" +
+                "    m.name,\n" +
+                "    m.cover,\n" +
+                "    m.length,\n" +
+                "    m.file_url,\n" +
+                "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked\n" +
+                "FROM \n" +
+                "    db_music m\n" +
+                "LEFT JOIN \n" +
+                "    db_like l ON m.id = l.musicid AND l.userid = #{userid}\n" +
+                "WHERE \n" +
+                "    m.id = #{musicid};")
+        JudgedMusic findMusicByLikeCount(Integer userid, Integer musicid);
+
 
         /**
          *  通过id查询艺术家
@@ -75,10 +96,14 @@ public interface MusicMapper{
          *   插入艺术家
          * @param name
          * @param desc
+         * @param createTime
+         * @param updateTime
          * @return
          */
-        @Insert("insert into db_artist (name,description) \n" +
-                "values (#{name}, #{desc})")
-        int insertArtist(String name,String desc);
+
+        @Insert("insert into db_artist (name,description,createTime,updateTime) \n" +
+                "values (#{name}, #{desc},#{createTime},#{updateTime})")
+        int insertArtist(String name,String desc, Date createTime,Date updateTime);
+
 
 }

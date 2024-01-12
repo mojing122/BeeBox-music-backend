@@ -1,9 +1,9 @@
 package live.mojing.beebox.mapper.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 @TableName(value = "db_music")
@@ -15,5 +15,6 @@ public class Music {
     Integer artistId;
     Integer length;
     String fileUrl;
-    Boolean isLiked;
+    private Date createTime;
+    private Date updateTime;
 }
