@@ -44,7 +44,7 @@ public class PlayListController {
         int accountId = user.getId();
 
         //定义包含所需的各种信息的新歌单实体
-        JudgedPlayList judgedPlayList=null;
+        JudgedPlayList judgedPlayList = new JudgedPlayList();
 
         //查找歌单中的音乐
         List<Music> musicList=playListService.selectMusicInPlaylistById(playlistId);

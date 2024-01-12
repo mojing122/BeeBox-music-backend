@@ -58,7 +58,7 @@ public interface PlayListMapper {
      * @param accountId
      * @return
      */
-    @Select("select * from db_playlist_by_account where playlistid = #{playlistId} and accountid=#{accountId}")
+    @Select("select count(*) from db_playlist_by_account where playlistid = #{playlistId} and accountid=#{accountId}")
     int judgePlaylistLiked(Integer accountId,Integer playlistId);//会返回受影响的行数，如果查询成功，则返回1，否则返回0。
 
 //    /**
