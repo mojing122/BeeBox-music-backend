@@ -33,10 +33,10 @@ public class MusicController {
     }
 
     @PostMapping("/get-musicList-by-likeCount")
-    public RestBean<List<Music>> findMusicByLikeCount(@RequestParam("limit") Integer limit,
+    public RestBean<List<JudgedMusic>> findMusicByLikeCount(@RequestParam("limit") Integer limit,
                                                       @RequestParam("offset")Integer offset)
     {
-        List<Music> musicList=musicService.findMusicByLikeCount(limit,offset);
+        List<JudgedMusic> musicList=musicService.findMusicByLikeCount(limit,offset);
         return RestBean.success(musicList);
     }
 
