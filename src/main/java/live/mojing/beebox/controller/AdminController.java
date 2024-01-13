@@ -118,7 +118,7 @@ public class AdminController {
             }
             Integer artistId=musicService.findArtistByName(artist).getId();
             int ret = musicService.insertMusic(name,relative_path_cover,length,RelativePath,artistId);
-            if(ret == 1 && ret1==1){// 数据插入成功
+            if(ret == 1 || ret1==1){// 数据插入成功
                 return RestBean.success("数据库上传成功");
             }else{
                 return RestBean.failure(409,"数据库上传失败");

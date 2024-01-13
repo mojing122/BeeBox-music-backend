@@ -1,15 +1,18 @@
 package live.mojing.beebox.controller;
 
+import live.mojing.beebox.mapper.entity.Artist;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedPlayList;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
 import live.mojing.beebox.mapper.entity.RestBean;
 import live.mojing.beebox.mapper.entity.user.AccountUser;
+import live.mojing.beebox.service.MusicService;
 import live.mojing.beebox.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,10 +51,11 @@ public class PlayListController {
         JudgedPlayList judgedPlayList=new JudgedPlayList();
 
         //查找歌单中的音乐
-        List<Music> musicList=playListService.selectMusicInPlaylistById(playlistId);
+        List<JudgedMusic> musicList=playListService.selectMusicInPlaylistById(playlistId,accountId);
 
         //设计歌单信息
         PlayList playList =playListService.findPlaylistById(playlistId);
+//        judgedPlayList.setArtist(MusicService.findArtistById());
         judgedPlayList.setName(playList.getName());
         judgedPlayList.setDescription(playList.getDescription());
         judgedPlayList.setListlength(musicList.size());

@@ -1,6 +1,7 @@
 package live.mojing.beebox.service.impl;
 
 import live.mojing.beebox.mapper.PlayListMapper;
+import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
 import live.mojing.beebox.service.PlayListService;
@@ -32,8 +33,8 @@ public class PlayListServicelmpl implements PlayListService {
     }
 
     @Override
-    public List<Music> selectMusicInPlaylistById(Integer playlistId){
-        List<Music> musicList=playListMapper.selectMusicInPlaylistById(playlistId);
+    public List<JudgedMusic> selectMusicInPlaylistById(Integer playlistId,Integer accountId){
+        List<JudgedMusic> musicList=playListMapper.selectMusicInPlaylistById(playlistId,accountId);
         return musicList;
     }
     @Override

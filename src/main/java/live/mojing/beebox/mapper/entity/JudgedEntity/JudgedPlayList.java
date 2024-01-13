@@ -14,5 +14,5 @@ public class JudgedPlayList {
     int isLiked;
     Boolean editable;
 
-    List<Music> musicList;
+    List<JudgedMusic> musicList;
 }

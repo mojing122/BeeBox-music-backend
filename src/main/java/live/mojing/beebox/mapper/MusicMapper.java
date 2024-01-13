@@ -23,10 +23,13 @@ public interface MusicMapper{
                 "    m.length,\n" +
                 "    m.file_url,\n" +
                 "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked\n" +
+                "    a.name as artist,\n" +
                 "FROM \n" +
                 "    db_music m\n" +
                 "LEFT JOIN \n" +
                 "    db_like l ON m.id = l.musicid AND l.accountid = #{accountid}\n" +
+                "LEFT JOIN \n" +
+                "    db_artist a on m.artist_id=a.id\n"+
                 "WHERE \n" +
                 "    m.id = #{musicid};")
         JudgedMusic findMusicById(Integer accountid, Integer musicid);
@@ -45,6 +48,7 @@ public interface MusicMapper{
                         Integer artistId, Date createTime,Date updateTime);
 
         /**
+         *  通过音乐名查找音乐
          *  通过音乐名查找音乐
          * @param musicName
          * @return

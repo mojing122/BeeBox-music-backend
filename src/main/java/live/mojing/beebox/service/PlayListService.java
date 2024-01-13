@@ -1,5 +1,6 @@
 package live.mojing.beebox.service;
 
+import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public interface PlayListService {
     //playlist插入
     int insertPlaylist(String name, String desc, Integer accountId, String cover);
 
-    List<Music> selectMusicInPlaylistById(Integer playlistId);
+    List<JudgedMusic> selectMusicInPlaylistById(Integer playlistId, Integer accountId);
 
     PlayList findPlaylistById(Integer playlistId);
 

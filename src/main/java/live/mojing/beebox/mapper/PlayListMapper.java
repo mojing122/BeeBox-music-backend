@@ -39,15 +39,29 @@ public interface PlayListMapper {
     /**
      *  通过歌单ID查找其中包含的音乐
      * @param playlistId
+     * @param accountId
      * @return
      */
-//    @Select("select * from db_music_in_playlist where playlistid = #{playlistId}")
-    @Select("SELECT m.id, m.name, m.cover, m.artist_id, m.length, m.file_url, m.createTime, m.updateTime\n" +
+    @Select(
+            "SELECT \n" +
+            "    m.id,\n" +
+            "    m.name,\n" +
+            "    m.cover,\n" +
+            "    m.length,\n" +
+            "    m.file_url,\n" +
+            "    m.createTime,\n" +
+            "    m.updateTime,\n" +
+            "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked,\n" +
+            "    a.name as artist\n" +
             "FROM db_music_in_playlist mip\n" +
-            "LEFT JOIN db_music m \n" +
-            "ON mip.musicid = m.id\n" +
+
+            "LEFT JOIN db_music  m ON  mip.musicid = m.id\n" +
+            "LEFT JOIN db_like   l ON  m.id = l.musicid AND l.accountid = #{accountId}\n" +
+            "LEFT JOIN db_artist a ON  m.artist_id=a.id\n" +
+
+            "where mip.playlistid=#{playlistId}\n" +
             "ORDER BY m.createTime DESC\n")
-    List<Music> selectMusicInPlaylistById(Integer playlistId);
+    List<JudgedMusic> selectMusicInPlaylistById(Integer playlistId,Integer accountId);
 
     /**
      *  通过歌单ID查找其中包含的音乐
