@@ -61,9 +61,18 @@ public class PlayListController {
         }
 
         Integer accountId =accountUser.getId();
-        int flag=playListService.insertPlaylist(name,description,accountId,relative_path_cover);
-        if(flag==1){
-            return RestBean.success("插入歌单成功!");
+        Date createTime = new Date();
+        PlayList playList = new PlayList();
+        playList.setName(name);
+        playList.setCover(relative_path_cover);
+        playList.setDescription(description);
+        playList.setCreatorid(accountId);
+        playList.setCreateTime(createTime);
+        playList.setUpdateTime(createTime);
+
+        int flag = playListService.insertPlaylist(playList);
+        if(flag>0){
+            return RestBean.success(Integer.toString(flag));
         }
         return RestBean.failure(403,"插入歌单失败!");
     }

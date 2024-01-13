@@ -66,7 +66,7 @@ public interface MusicMapper{
                 "FROM db_music m\n" +
                 "LEFT JOIN db_like l ON m.id = l.musicid AND l.accountid = #{accountId}\n" +
                 "LEFT JOIN db_artist a on m.artist_id=a.id\n" +
-                "WHERE m.name = #{musicName};")
+                "WHERE m.name like CONCAT('%', #{musicName}, '%');")
         List<JudgedMusic> selectBytitle(String musicName,Integer accountId);
 
         //----------like表相关操作----------//

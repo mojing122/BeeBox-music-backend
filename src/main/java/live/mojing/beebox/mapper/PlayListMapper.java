@@ -3,10 +3,7 @@ package live.mojing.beebox.mapper;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
@@ -25,18 +22,13 @@ public interface PlayListMapper {
 
     /**
      *   playlist插入
-     * @param name
-     * @param description
-     * @param creatorId
-     * @param cover
-     * @param createTime
-     * @param updateTime
+     * @param playList
      * @return
      */
-    @Insert("insert into db_playlist (name,description,creatorid,cover,createTime,updateTime) \n" +
-            "values (#{name}, #{description},#{creatorId},#{cover},#{createTime},#{updateTime})")
-    int insertPlaylist(String name,String description, Integer creatorId, String cover, Date createTime, Date updateTime);
-
+    @Insert("insert into db_playlist (name,description,creatorid,cover,createTime,updateTime) " +
+            "values (#{playList.name}, #{playList.description},#{playList.creatorid},#{playList.cover},#{playList.createTime},#{playList.updateTime}); ")
+    @Options(useGeneratedKeys=true, keyProperty="playList.id")
+    int insertPlaylist(@Param("playList") PlayList playList);
     /**
      *  通过歌单ID查找其中包含的音乐
      * @param playlistId

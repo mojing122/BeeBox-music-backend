@@ -25,12 +25,15 @@ public class PlayListServicelmpl implements PlayListService {
     }
 
     @Override
-    public int insertPlaylist(String name, String desc, Integer accountId, String cover){
-        Date createTime = new Date();
-        Date updateTime = new Date();
-        String decodedName = URLDecoder.decode(name, StandardCharsets.UTF_8);
-        int flag=playListMapper.insertPlaylist(decodedName,desc,accountId,cover,createTime,updateTime);
-        return flag;
+    public int insertPlaylist(PlayList playList){
+        String decodedName = URLDecoder.decode(playList.getName(), StandardCharsets.UTF_8);
+        playList.setName(decodedName);
+        int flag = playListMapper.insertPlaylist(playList);
+        if (flag > 0) {
+            return playList.getId();
+        } else {
+            return 0;
+        }
     }
 
     @Override

@@ -15,7 +15,7 @@ public interface PlayListService {
     List<PlayList> SelectAllPlaylist(int limit,int offset);
 
     //playlist插入
-    int insertPlaylist(String name, String desc, Integer accountId, String cover);
+    int insertPlaylist( PlayList playList);
 
     List<JudgedMusic> selectMusicInPlaylistById(Integer playlistId, Integer accountId);
 
