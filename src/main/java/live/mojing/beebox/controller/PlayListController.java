@@ -10,8 +10,13 @@ import live.mojing.beebox.mapper.entity.user.AccountUser;
 import live.mojing.beebox.service.MusicService;
 import live.mojing.beebox.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +26,9 @@ import java.util.List;
 public class PlayListController {
     @Autowired
     private PlayListService playListService;
+
+    @Value("${local.path}")
+    private String  SAVE_PATH;
 
     @GetMapping("/get-playlist")
     public RestBean<List<PlayList>> selectThreePlaylists(@RequestParam("limit") int limit,
@@ -32,9 +40,28 @@ public class PlayListController {
     @PostMapping("/insert-playlist")
     public RestBean<String> insertPlaylist(@RequestParam("name") String name,
                                            @RequestParam("description") String description,
-                                           @RequestParam("accountId") Integer accountId,
-                                           @RequestParam("cover") String cover){
-        int flag=playListService.insertPlaylist(name,description,accountId,cover);
+                                           @SessionAttribute("account")AccountUser accountUser,
+                                           @RequestParam("cover") MultipartFile cover)
+    {
+        //上传封面图片
+        String originalFilename = cover.getOriginalFilename(); //获取原来的文件名和后缀
+        String extCover = "."+ originalFilename.split("\\.")[1];//后缀
+        String path_cover = SAVE_PATH+"/cover/"+originalFilename;//拼接图片上传的路径 url+图片名
+        String relative_path_cover="/cover/"+originalFilename;
+        File destCover = new File(path_cover);
+        if(!destCover.exists()){
+            //如果路径不存在就创建目录
+            destCover.mkdir();
+        }
+        try {
+            cover.transferTo(destCover);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return RestBean.failure(420,"图片上传失败");
+        }
+
+        Integer accountId =accountUser.getId();
+        int flag=playListService.insertPlaylist(name,description,accountId,relative_path_cover);
         if(flag==1){
             return RestBean.success("插入歌单成功!");
         }
@@ -74,4 +101,45 @@ public class PlayListController {
         return RestBean.success(judgedPlayList);
     }
 
+    @PostMapping("/like-or-cancel-like-musicsheet")
+    public RestBean<String> likeMusicSheet(@RequestParam("playlistId") Integer playlistId,
+                                      @SessionAttribute("account") AccountUser user,
+                                      @RequestParam("flag") Boolean flag){
+        Integer accountId=user.getId();
+        int exist=playListService.judgeLike(playlistId,accountId);
+
+        if(flag){
+            if(exist==0){
+                if(playListService.likeMusicSheet(playlistId,accountId)!=0)
+                    return RestBean.success("收藏成功!");
+                else
+                    return RestBean.failure(401,"收藏失败!");
+            }
+            else
+                return RestBean.failure(402,"用户已经收藏该歌单,请联系管理员!");
+        }
+        else{
+            if(exist!=0){
+                if(playListService.cancelLike(playlistId,accountId)!=0)
+                    return RestBean.success("取消收藏成功!");
+                else
+                    return RestBean.failure(403,"取消收藏失败!");
+            }
+            else
+                return RestBean.failure(404,"用户没有收藏该歌单,无法取消收藏,请联系管理员!");
+        }
+    }
+
+    @GetMapping("/show-the-playlist-I-created")
+    public RestBean<List<PlayList>> ShowThePlaylistICreated(@SessionAttribute("account") AccountUser user){
+        Integer accountId= user.getId();
+        List<PlayList> playLists=playListService.ShowThePlaylistICreated(accountId);
+        return RestBean.success(playLists);
+    }
+    @GetMapping("/show-my-favourite-playlist")
+    public RestBean<List<PlayList>> ShowMyFavoritePlaylists(@SessionAttribute("account") AccountUser user){
+        Integer accountId= user.getId();
+        List<PlayList> playLists=playListService.ShowMyFavoritePlaylists(accountId);
+        return RestBean.success(playLists);
+    }
 }

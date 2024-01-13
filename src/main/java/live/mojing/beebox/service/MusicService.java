@@ -16,7 +16,7 @@ public interface MusicService{
 
     int insertArtist(String name, String desc);
 
-    List<Music> selectBytitle(String musicName);
+    List<JudgedMusic> selectBytitle(String musicName,Integer accountId);
 
     Artist findArtistById(Integer artistid);
 
@@ -28,5 +28,6 @@ public interface MusicService{
     int cancelLike(Integer musicId,Integer accountId);
     int judgeLike(Integer musicId,Integer accountId);
 
+    int getMusicNum();
 }
 

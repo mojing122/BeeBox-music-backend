@@ -42,8 +42,8 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<Music> selectBytitle(String musicName) {
-        List<Music> musicList= musicMapper.selectBytitle(musicName);
+    public List<JudgedMusic> selectBytitle(String musicName,Integer accountId){
+        List<JudgedMusic> musicList= musicMapper.selectBytitle(musicName,accountId);
         return musicList;
     }
 
@@ -66,7 +66,10 @@ public class MusicServiceImpl implements MusicService {
     public int judgeLike(Integer musicId,Integer accountId){
         return musicMapper.judgeLike(musicId,accountId);
     }
-
+    @Override
+    public int getMusicNum(){
+        return musicMapper.getMusicNum();
+    }
 
     /**
      * 艺术家相关Service

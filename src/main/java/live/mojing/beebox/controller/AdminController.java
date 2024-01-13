@@ -4,17 +4,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import live.mojing.beebox.mapper.entity.Artist;
+import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.RestBean;
+import live.mojing.beebox.mapper.entity.user.AccountUser;
 import live.mojing.beebox.service.MusicService;
 import org.apache.ibatis.binding.BindingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.system.ApplicationHome;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -39,7 +38,7 @@ public class AdminController {
      * @param file
      * @param cover
      * @param length
-     * @param name
+     * @param musicName
      * @param artist
      * @return 上传成功或失败的信息
      */
@@ -47,10 +46,11 @@ public class AdminController {
     public RestBean<String> insertMusic(
             @RequestParam("file") MultipartFile file,
             @RequestParam("cover") MultipartFile cover,
-            @RequestParam("name") String name,
+            @RequestParam("name") String musicName,
             @RequestParam("artist") String artist,
-            @RequestParam("length") Integer length
-    )
+            @RequestParam("length") Integer length,
+            @SessionAttribute("account")AccountUser accountUser
+            )
     {
 
         // 1. 获取的是文件的完整名称，包括文件名称+文件拓展名
@@ -60,12 +60,11 @@ public class AdminController {
         // 2. 查询数据库中是否存在当前要上传的音乐（歌曲名+歌手）
 
         // 判断当前上传的歌曲+歌手在数据库中是否同时存在，如果存在则上传失败（歌曲名+歌手 不能重复）
-        List<Music> list = musicService.selectBytitle(name);
+        Integer accountId =accountUser.getId();
+        List<JudgedMusic> list = musicService.selectBytitle(musicName,accountId);
         if(list != null){
-            for(Music music : list){
-                Integer artistId=music.getArtistId();
-                Artist artistInDatabase=musicService.findArtistById(artistId);;
-                String  artistName=artistInDatabase.getName();
+            for(JudgedMusic music : list){
+                String artistName=music.getArtist();
                 if(artistName.equals(artist)){
                     return RestBean.failure(403,"上传失败，数据库中存在此歌曲，不能重复上传");
                 }
@@ -75,8 +74,8 @@ public class AdminController {
         // 3. 数据上传到服务器
 
         // 上传文件路径
-        String path = SAVE_PATH+"/music/"+name+extMusic; //绝对路径
-        String RelativePath="/music/"+name+extMusic; //相对路径
+        String path = SAVE_PATH+"/music/"+musicName+extMusic; //绝对路径
+        String RelativePath="/music/"+musicName+extMusic; //相对路径
 
         // 上传音乐文件
         File destMusic = new File(path);
@@ -117,7 +116,7 @@ public class AdminController {
                 ret1=musicService.insertArtist(artist,desc);
             }
             Integer artistId=musicService.findArtistByName(artist).getId();
-            int ret = musicService.insertMusic(name,relative_path_cover,length,RelativePath,artistId);
+            int ret = musicService.insertMusic(musicName,relative_path_cover,length,RelativePath,artistId);
             if(ret == 1 || ret1==1){// 数据插入成功
                 return RestBean.success("数据库上传成功");
             }else{

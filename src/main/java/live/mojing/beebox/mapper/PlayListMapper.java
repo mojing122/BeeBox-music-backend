@@ -3,6 +3,7 @@ package live.mojing.beebox.mapper;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -33,7 +34,7 @@ public interface PlayListMapper {
      * @return
      */
     @Insert("insert into db_playlist (name,description,creatorid,cover,createTime,updateTime) \n" +
-            "values (#{name}, #{description},#{accountId},#{cover},#{createTime},#{updateTime})")
+            "values (#{name}, #{description},#{creatorId},#{cover},#{createTime},#{updateTime})")
     int insertPlaylist(String name,String description, Integer creatorId, String cover, Date createTime, Date updateTime);
 
     /**
@@ -73,16 +74,6 @@ public interface PlayListMapper {
 
 
     /**
-     *  收藏歌单
-     * @param playlistId
-     * @param accountId
-     * @return
-     */
-    @Insert("insert into db_playlist_by_account (accountid,playlistid) \n" +
-            "values (#{musicId},#{accountId})")
-    int likeInsert(Integer accountId,Integer playlistId);
-
-    /**
      *  判断当前歌单是否被当前用户收藏
      * @param playlistId
      * @param accountId
@@ -90,6 +81,71 @@ public interface PlayListMapper {
      */
     @Select("select count(*) from db_playlist_by_account where playlistid = #{playlistId} and accountid=#{accountId}")
     int judgePlaylistLiked(Integer accountId,Integer playlistId);//会返回受影响的行数，如果查询成功，则返回1，否则返回0。
+
+
+    //----------like表相关操作----------//
+    /**
+     *  收藏歌单
+     * @param playlistId
+     * @param accountId
+     * @return
+     */
+    @Insert("insert into db_playlist_by_account (accountid,playlistid) \n" +
+            "values (#{accountId},#{playlistId})")
+    int likeInsert(Integer playlistId,Integer accountId);
+
+    /**
+     *  取消收藏歌单
+     * @param playlistId
+     * @param accountId
+     * @return
+     */
+    @Delete("DELETE FROM db_playlist_by_account WHERE accountid = #{accountId} AND playlistid=#{playlistId};")
+    int likeDelete(Integer playlistId,Integer accountId);
+
+    /**
+     *  查询是否已经收藏
+     * @param accountId
+     * @param accountId
+     * @return
+     */
+    @Select("SELECT Count(*) FROM db_playlist_by_account WHERE accountid = #{accountId} AND playlistid=#{playlistId};")
+    int judgeLike(Integer playlistId,Integer accountId);
+
+    //--------------------------
+    /**
+     *  展示我收藏的歌单
+     * @param accountId
+     * @return
+     */
+    @Select(
+            "select \n" +
+            "    p.id,\n" +
+            "    p.name,\n" +
+            "    p.description,\n" +
+            "    p.creatorid,\n" +
+            "    p.cover,\n" +
+            "    p.createTime,\n" +
+            "    p.updateTime\n" +
+            "from db_playlist p \n"+
+            "where creatorid=#{accountId};"
+    )
+    List<PlayList> ShowThePlaylistICreated(Integer accountId);
+
+    @Select(
+            "select \n" +
+            "    p.id,\n" +
+            "    p.name,\n" +
+            "    p.description,\n" +
+            "    p.creatorid,\n" +
+            "    p.cover,\n" +
+            "    p.createTime,\n" +
+            "    p.updateTime\n" +
+            "from db_playlist_by_account pba\n"+
+            "left join db_playlist p on pba.playlistid=p.id \n"+
+            "where accountid=#{accountId};"
+    )
+    List<PlayList> ShowMyFavoritePlaylists(Integer accountId);
 
 }
 

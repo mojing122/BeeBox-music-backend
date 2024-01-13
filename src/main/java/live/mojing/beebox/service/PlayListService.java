@@ -22,4 +22,12 @@ public interface PlayListService {
     PlayList findPlaylistById(Integer playlistId);
 
     int judgePlaylistLiked(Integer accountId,Integer playlistId);
+
+    //-----------like-------------
+    int likeMusicSheet(Integer playlistId,Integer accountId);
+    int cancelLike(Integer playlistId,Integer accountId);
+    int judgeLike(Integer playlistId,Integer accountId);
+
+    List<PlayList> ShowThePlaylistICreated(Integer accountId);
+    List<PlayList> ShowMyFavoritePlaylists(Integer accountId);
 }

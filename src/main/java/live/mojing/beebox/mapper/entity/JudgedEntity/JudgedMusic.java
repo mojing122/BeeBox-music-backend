@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import live.mojing.beebox.mapper.entity.Music;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class JudgedMusic {
     @TableId(value = "id",type= IdType.AUTO)
@@ -15,6 +17,8 @@ public class JudgedMusic {
     String fileUrl;
     Boolean isLiked;
     String artist;
+    private Date createTime;
+    private Date updateTime;
 }
 
 

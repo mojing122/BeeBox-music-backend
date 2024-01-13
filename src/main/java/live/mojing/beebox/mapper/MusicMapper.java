@@ -3,6 +3,7 @@ package live.mojing.beebox.mapper;
 import live.mojing.beebox.mapper.entity.Artist;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
+import live.mojing.beebox.mapper.entity.PlayList;
 import org.apache.ibatis.annotations.*;
 import org.springframework.data.relational.core.sql.In;
 
@@ -23,6 +24,8 @@ public interface MusicMapper{
                 "    m.cover,\n" +
                 "    m.length,\n" +
                 "    m.file_url,\n" +
+                "    m.createTime,\n" +
+                "    m.updateTime,\n" +
                 "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked,\n" +
                 "    a.name as artist\n" +
                 "FROM db_music m\n" +
@@ -46,12 +49,25 @@ public interface MusicMapper{
 
         /**
          *  通过音乐名查找音乐
-         *  通过音乐名查找音乐
          * @param musicName
+         * @param accountId
          * @return
          */
-        @Select("select * from db_music where name = #{musicName}")
-        List<Music> selectBytitle(String musicName);
+        @Select("SELECT \n" +
+                "    m.id,\n" +
+                "    m.name,\n" +
+                "    m.cover,\n" +
+                "    m.length,\n" +
+                "    m.file_url,\n" +
+                "    m.createTime,\n" +
+                "    m.updateTime,\n" +
+                "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked,\n" +
+                "    a.name as artist\n" +
+                "FROM db_music m\n" +
+                "LEFT JOIN db_like l ON m.id = l.musicid AND l.accountid = #{accountId}\n" +
+                "LEFT JOIN db_artist a on m.artist_id=a.id\n" +
+                "WHERE m.name = #{musicName};")
+        List<JudgedMusic> selectBytitle(String musicName,Integer accountId);
 
         //----------like表相关操作----------//
         /**
@@ -65,7 +81,7 @@ public interface MusicMapper{
         int likeInsert(Integer musicId,Integer accountId);
 
         /**
-         *  收藏歌曲
+         *  取消收藏歌曲
          * @param musicId
          * @param accountId
          * @return
@@ -79,10 +95,12 @@ public interface MusicMapper{
          * @param accountId
          * @return
          */
-        @Select("SELECT * FROM db_like WHERE musicid = #{musicId} AND accountid=#{accountId};")
+        @Select("SELECT Count(*) FROM db_like WHERE musicid = #{musicId} AND accountid=#{accountId};")
         int judgeLike(Integer musicId,Integer accountId);
+        //------------like end-----------------//
 
-        //--------------//
+
+
         /**
          *  根据歌曲的点赞量查找规定数量歌曲歌曲
          * @param limit
@@ -100,7 +118,15 @@ public interface MusicMapper{
                 "LIMIT #{limit} OFFSET #{offset};")
         List<JudgedMusic> findMusicByLikeCount(Integer limit, Integer offset);
 
+        /**
+         *  查询当前曲库中的音乐数量
+         * @return
+         */
+        @Select("SELECT Count(*) FROM db_music;")
+        int getMusicNum();
 
+
+        //---------------artist---------------
         /**
          *  通过id查询艺术家
          * @param artistid
@@ -117,8 +143,6 @@ public interface MusicMapper{
         @Select("select * from db_artist where name =#{artistname}")
         Artist findArtistByName(String artistname);
 
-
-
         /**
          *   插入艺术家
          * @param name
@@ -131,6 +155,5 @@ public interface MusicMapper{
         @Insert("insert into db_artist (name,description,createTime,updateTime) \n" +
                 "values (#{name}, #{desc},#{createTime},#{updateTime})")
         int insertArtist(String name,String desc, Date createTime,Date updateTime);
-
 
 }

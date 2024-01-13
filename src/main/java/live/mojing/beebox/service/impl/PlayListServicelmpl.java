@@ -6,6 +6,7 @@ import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
 import live.mojing.beebox.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.net.URLDecoder;
@@ -34,17 +35,39 @@ public class PlayListServicelmpl implements PlayListService {
 
     @Override
     public List<JudgedMusic> selectMusicInPlaylistById(Integer playlistId,Integer accountId){
-        List<JudgedMusic> musicList=playListMapper.selectMusicInPlaylistById(playlistId,accountId);
-        return musicList;
+        return playListMapper.selectMusicInPlaylistById(playlistId,accountId);
     }
     @Override
     public PlayList findPlaylistById(Integer playlistId){
-        PlayList playList=playListMapper.findPlaylistById(playlistId);
-        return playList;
+        return playListMapper.findPlaylistById(playlistId);
     }
 
     @Override
     public int judgePlaylistLiked(Integer accountId,Integer playlistId){
         return playListMapper.judgePlaylistLiked(accountId,playlistId);
+    }
+    //---------------------------------------------
+    @Override
+    public int likeMusicSheet(Integer playlistId,Integer accountId){
+        return playListMapper.likeInsert(playlistId,accountId);
+    }
+    @Override
+    public int cancelLike(Integer playlistId,Integer accountId){
+        return playListMapper.likeDelete(playlistId,accountId);
+    }
+
+    @Override
+    public int judgeLike(Integer playlistId,Integer accountId){
+        return playListMapper.judgeLike(playlistId,accountId);
+    }
+
+    @Override
+    public List<PlayList> ShowThePlaylistICreated(Integer accountId){
+        return playListMapper.ShowThePlaylistICreated(accountId);
+    }
+
+    @Override
+    public List<PlayList> ShowMyFavoritePlaylists(Integer accountId){
+        return playListMapper.ShowMyFavoritePlaylists(accountId);
     }
 }
