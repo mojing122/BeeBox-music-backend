@@ -25,6 +25,8 @@ public interface MusicService{
     List<JudgedMusic> findMusicByLikeCount(Integer limit, Integer offset);
 
     int likeMusic(Integer musicId,Integer accountId);
+    int cancelLike(Integer musicId,Integer accountId);
+    int judgeLike(Integer musicId,Integer accountId);
 
 }
 

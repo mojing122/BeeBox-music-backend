@@ -40,17 +40,32 @@ public class MusicController {
         return RestBean.success(musicList);
     }
 
-    @PostMapping("/like")
+    @PostMapping("/like-or-cancel-like")
     public RestBean<String> likeMusic(@RequestParam("musicId") Integer musicId,
                                       @SessionAttribute("account") AccountUser user,
                                       @RequestParam("flag") Boolean flag){
         Integer accountId=user.getId();
+        int exist=musicService.judgeLike(musicId,accountId);
+
         if(flag){
-            musicService.likeMusic(musicId,accountId);
-            return RestBean.success("收藏成功!");
+            if(exist==0){
+                if(musicService.likeMusic(musicId,accountId)!=0)
+                    return RestBean.success("收藏成功!");
+                else
+                    return RestBean.failure(402,"收藏失败!");
+            }
+            else
+                return RestBean.failure(401,"用户已经收藏该歌曲,请联系管理员!");
         }
         else{
-            return RestBean.failure(403,"收藏失败!");
+            if(exist!=0){
+                if(musicService.cancelLike(musicId,accountId)!=0)
+                    return RestBean.success("取消收藏成功!");
+                else
+                    return RestBean.failure(403,"取消收藏失败!");
+            }
+            else
+                return RestBean.failure(404,"用户没有收藏该歌曲,无法取消收藏,请联系管理员!");
         }
     }
 }

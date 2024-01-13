@@ -53,6 +53,20 @@ public class MusicServiceImpl implements MusicService {
         return musicList;
     }
 
+    @Override
+    public int likeMusic(Integer musicId,Integer accountId){
+        return musicMapper.likeInsert(musicId,accountId);
+    }
+    @Override
+    public int cancelLike(Integer musicId,Integer accountId){
+        return musicMapper.likeDelete(musicId,accountId);
+    }
+
+    @Override
+    public int judgeLike(Integer musicId,Integer accountId){
+        return musicMapper.judgeLike(musicId,accountId);
+    }
+
 
     /**
      * 艺术家相关Service
@@ -77,9 +91,6 @@ public class MusicServiceImpl implements MusicService {
         return artist;
     }
 
-    @Override
-    public int likeMusic(Integer musicId,Integer accountId){
-        return musicMapper.likeInsert(musicId,accountId);
-    }
+
 }
 

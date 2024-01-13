@@ -53,9 +53,9 @@ public interface MusicMapper{
         @Select("select * from db_music where name = #{musicName}")
         List<Music> selectBytitle(String musicName);
 
+        //----------like表相关操作----------//
         /**
-         *  通过音乐名查找音乐
-         *  通过音乐名查找音乐
+         *  收藏歌曲
          * @param musicId
          * @param accountId
          * @return
@@ -64,6 +64,25 @@ public interface MusicMapper{
                 "values (#{musicId},#{accountId})")
         int likeInsert(Integer musicId,Integer accountId);
 
+        /**
+         *  收藏歌曲
+         * @param musicId
+         * @param accountId
+         * @return
+         */
+        @Delete("DELETE FROM db_like WHERE musicid = #{musicId} AND accountid=#{accountId};")
+        int likeDelete(Integer musicId,Integer accountId);
+
+        /**
+         *  查询是否已经收藏
+         * @param musicId
+         * @param accountId
+         * @return
+         */
+        @Select("SELECT * FROM db_like WHERE musicid = #{musicId} AND accountid=#{accountId};")
+        int judgeLike(Integer musicId,Integer accountId);
+
+        //--------------//
         /**
          *  根据歌曲的点赞量查找规定数量歌曲歌曲
          * @param limit

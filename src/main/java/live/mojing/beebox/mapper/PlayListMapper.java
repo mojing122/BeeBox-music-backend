@@ -71,6 +71,17 @@ public interface PlayListMapper {
     @Select("select * from db_playlist where id = #{playlistId}")
     PlayList findPlaylistById(Integer playlistId);
 
+
+    /**
+     *  收藏歌单
+     * @param playlistId
+     * @param accountId
+     * @return
+     */
+    @Insert("insert into db_playlist_by_account (accountid,playlistid) \n" +
+            "values (#{musicId},#{accountId})")
+    int likeInsert(Integer accountId,Integer playlistId);
+
     /**
      *  判断当前歌单是否被当前用户收藏
      * @param playlistId
