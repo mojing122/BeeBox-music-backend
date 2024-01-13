@@ -70,4 +70,9 @@ public class PlayListServicelmpl implements PlayListService {
     public List<PlayList> ShowMyFavoritePlaylists(Integer accountId){
         return playListMapper.ShowMyFavoritePlaylists(accountId);
     }
+
+    @Override
+    public int deletePlaylist(Integer playlistId,Integer accountId){
+        return playListMapper.deletePlaylist(playlistId,accountId);
+    }
 }

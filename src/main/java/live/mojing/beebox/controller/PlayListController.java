@@ -142,4 +142,16 @@ public class PlayListController {
         List<PlayList> playLists=playListService.ShowMyFavoritePlaylists(accountId);
         return RestBean.success(playLists);
     }
+
+    @PostMapping("/delete-playlist")
+    public RestBean<String> deletePlaylist(@RequestParam("playlistId") Integer playlistId,
+                                           @SessionAttribute("account") AccountUser user)
+    {
+        Integer accountId= user.getId();
+        Integer flag=playListService.deletePlaylist(playlistId,accountId);
+        if(flag!=0)
+            return RestBean.success("删除歌单成功!");
+        else
+            return RestBean.failure(404,"删除歌单失败!");
+    }
 }

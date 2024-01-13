@@ -30,4 +30,6 @@ public interface PlayListService {
 
     List<PlayList> ShowThePlaylistICreated(Integer accountId);
     List<PlayList> ShowMyFavoritePlaylists(Integer accountId);
+
+    int deletePlaylist(Integer playlistId,Integer accountId);
 }
