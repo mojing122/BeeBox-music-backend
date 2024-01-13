@@ -23,16 +23,12 @@ public interface MusicMapper{
                 "    m.cover,\n" +
                 "    m.length,\n" +
                 "    m.file_url,\n" +
-                "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked\n" +
-                "    a.name as artist,\n" +
-                "FROM \n" +
-                "    db_music m\n" +
-                "LEFT JOIN \n" +
-                "    db_like l ON m.id = l.musicid AND l.accountid = #{accountid}\n" +
-                "LEFT JOIN \n" +
-                "    db_artist a on m.artist_id=a.id\n"+
-                "WHERE \n" +
-                "    m.id = #{musicid};")
+                "    (CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked,\n" +
+                "    a.name as artist\n" +
+                "FROM db_music m\n" +
+                "LEFT JOIN db_like l ON m.id = l.musicid AND l.accountid = #{accountid}\n" +
+                "LEFT JOIN db_artist a on m.artist_id=a.id\n" +
+                "WHERE m.id = #{musicid};")
         JudgedMusic findMusicById(Integer accountid, Integer musicid);
 
         /**
@@ -74,11 +70,12 @@ public interface MusicMapper{
          * @param offset
          * @return 歌曲列表
          */
-        @Select("SELECT m.id, m.name, m.cover, m.length, m.file_url, m.artist_id, COUNT(l.id) AS like_count\n" +
-                "(CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked \n"+
+        @Select("SELECT m.id, m.name, m.cover, m.length, m.file_url, m.artist_id, COUNT(l.id) AS like_count,\n" +
+                "(CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked ,\n"+
+                "a.name as artist\n" +
                 "FROM db_music m\n" +
-                "LEFT JOIN db_like l \n" +
-                "ON m.id = l.musicid\n" +
+                "LEFT JOIN db_like l ON m.id = l.musicid\n" +
+                "LEFT JOIN db_artist a on m.artist_id=a.id\n" +
                 "GROUP BY m.id\n" +
                 "ORDER BY like_count DESC\n" +
                 "LIMIT #{limit} OFFSET #{offset};")

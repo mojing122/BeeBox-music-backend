@@ -41,9 +41,9 @@ public class MusicController {
     }
 
     @PostMapping("/like")
-    public RestBean<String> likeMusic(@RequestParam("offset") Integer musicId,
+    public RestBean<String> likeMusic(@RequestParam("musicId") Integer musicId,
                                       @SessionAttribute("account") AccountUser user,
-                                      @RequestParam("offset") Boolean flag){
+                                      @RequestParam("flag") Boolean flag){
         Integer accountId=user.getId();
         if(flag){
             musicService.likeMusic(musicId,accountId);
