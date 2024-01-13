@@ -22,6 +22,9 @@ public interface MusicService{
 
     Artist findArtistByName(String artistname);
 
-    List<Music> findMusicByLikeCount(Integer limit, Integer offset);
+    List<JudgedMusic> findMusicByLikeCount(Integer limit, Integer offset);
+
+    int likeMusic(Integer musicId,Integer accountId);
+
 }
 

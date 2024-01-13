@@ -48,8 +48,8 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<Music> findMusicByLikeCount(Integer limit, Integer offset){
-        List<Music> musicList =musicMapper.findMusicByLikeCount(limit,offset);
+    public List<JudgedMusic> findMusicByLikeCount(Integer limit, Integer offset){
+        List<JudgedMusic> musicList =musicMapper.findMusicByLikeCount(limit,offset);
         return musicList;
     }
 
@@ -77,6 +77,9 @@ public class MusicServiceImpl implements MusicService {
         return artist;
     }
 
-
+    @Override
+    public int likeMusic(Integer musicId,Integer accountId){
+        return musicMapper.likeInsert(musicId,accountId);
+    }
 }
 

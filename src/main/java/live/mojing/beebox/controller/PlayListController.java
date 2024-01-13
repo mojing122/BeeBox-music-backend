@@ -55,7 +55,6 @@ public class PlayListController {
 
         //设计歌单信息
         PlayList playList =playListService.findPlaylistById(playlistId);
-//        judgedPlayList.setArtist(MusicService.findArtistById());
         judgedPlayList.setName(playList.getName());
         judgedPlayList.setDescription(playList.getDescription());
         judgedPlayList.setListlength(musicList.size());

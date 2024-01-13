@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class JudgedMusic {
-//    Music music;
     @TableId(value = "id",type= IdType.AUTO)
     Integer id;
     String name;

@@ -4,6 +4,7 @@ import live.mojing.beebox.mapper.entity.Artist;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import org.apache.ibatis.annotations.*;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,18 @@ public interface MusicMapper{
          * @return
          */
         @Select("select * from db_music where name = #{musicName}")
-        public List<Music> selectBytitle(String musicName);
+        List<Music> selectBytitle(String musicName);
+
+        /**
+         *  通过音乐名查找音乐
+         *  通过音乐名查找音乐
+         * @param musicId
+         * @param accountId
+         * @return
+         */
+        @Insert("insert into db_like (musicid,accountid) \n" +
+                "values (#{musicId},#{accountId})")
+        int likeInsert(Integer musicId,Integer accountId);
 
         /**
          *  根据歌曲的点赞量查找规定数量歌曲歌曲
@@ -62,14 +74,15 @@ public interface MusicMapper{
          * @param offset
          * @return 歌曲列表
          */
-        @Select("SELECT m.id, m.name, m.cover, m.length, m.file_url, m.artist_id, m.createTime, m.updateTime, COUNT(l.id) AS like_count\n" +
+        @Select("SELECT m.id, m.name, m.cover, m.length, m.file_url, m.artist_id, COUNT(l.id) AS like_count\n" +
+                "(CASE WHEN l.musicid IS NOT NULL THEN TRUE ELSE FALSE END) AS isLiked \n"+
                 "FROM db_music m\n" +
                 "LEFT JOIN db_like l \n" +
                 "ON m.id = l.musicid\n" +
                 "GROUP BY m.id\n" +
                 "ORDER BY like_count DESC\n" +
                 "LIMIT #{limit} OFFSET #{offset};")
-        List<Music> findMusicByLikeCount(Integer limit, Integer offset);
+        List<JudgedMusic> findMusicByLikeCount(Integer limit, Integer offset);
 
 
         /**
