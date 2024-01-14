@@ -156,8 +156,31 @@ public class PlayListController {
     public RestBean<String> deletePlaylist(@RequestParam("playlistId") Integer playlistId,
                                            @SessionAttribute("account") AccountUser user)
     {
+        PlayList playList=playListService.findPlaylistById(playlistId);
+        String coverPath=playList.getCover();
         Integer accountId= user.getId();
         Integer flag=playListService.deletePlaylist(playlistId,accountId);
+
+
+
+        // 指定要删除的文件路径
+        String filePath = SAVE_PATH+coverPath; // 例如："/home/user/images/pic1.jpg"
+
+        // 创建File对象
+        File file = new File(filePath);
+
+        // 判断文件是否存在
+        if (file.exists()) {
+            // 调用delete()方法来删除文件
+            if (file.delete()) {
+                System.out.println("歌单封面文件删除成功");
+            } else {
+                System.out.println("歌单封面文件删除失败");
+            }
+        } else {
+            System.out.println("歌单封面文件不存在");
+        }
+
         if(flag!=0)
             return RestBean.success("删除歌单成功!");
         else
