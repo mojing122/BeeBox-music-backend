@@ -114,7 +114,7 @@ public interface MusicMapper{
                 "LEFT JOIN db_like l ON m.id = l.musicid\n" +
                 "LEFT JOIN db_artist a on m.artist_id=a.id\n" +
                 "GROUP BY m.id\n" +
-                "ORDER BY like_count DESC\n" +
+                "ORDER BY like_count DESC, m.id DESC\n" +
                 "LIMIT #{limit} OFFSET #{offset};")
         List<JudgedMusic> findMusicByLikeCount(Integer limit, Integer offset);
 
