@@ -148,5 +148,34 @@ public interface PlayListMapper {
     )
     List<PlayList> ShowMyFavoritePlaylists(Integer accountId);
 
+    //----------歌单中插入删除歌曲相关操作----------//
+    /**
+     *  插入歌曲
+     * @param musicId
+     * @param playlistId
+     * @return
+     */
+    @Insert("insert into db_music_in_playlist (playlistid,musicid) \n" +
+            "values (#{playlistId},#{musicId})")
+    int InsertMusic(Integer playlistId,Integer musicId);
+
+    /**
+     *  删除歌曲
+     * @param musicId
+     * @param playlistId
+     * @return
+     */
+    @Delete("DELETE FROM db_music_in_playlist WHERE playlistid = #{playlistId} AND musicid=#{musicId};")
+    int DeleteMusic(Integer playlistId,Integer musicId);
+
+    /**
+     *  查询是否已经收藏
+     * @param musicId
+     * @param playlistId
+     * @return
+     */
+    @Select("SELECT Count(*) FROM db_music_in_playlist WHERE playlistid = #{playlistId} AND musicid=#{musicId};")
+    int judgeExist(Integer playlistId,Integer musicId);
+    //------------end-----------------//
 }
 

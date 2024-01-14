@@ -78,4 +78,18 @@ public class PlayListServicelmpl implements PlayListService {
     public int deletePlaylist(Integer playlistId,Integer accountId){
         return playListMapper.deletePlaylist(playlistId,accountId);
     }
+
+    @Override
+    public int InsertMusic(Integer playlistId,Integer musicId){
+        return playListMapper.InsertMusic(playlistId,musicId);
+    }
+
+    @Override
+    public int DeleteMusic(Integer playlistId,Integer musicId){
+        return playListMapper.DeleteMusic(playlistId,musicId);
+    }
+    @Override
+    public int judgeExist(Integer playlistId,Integer musicId){
+        return playListMapper.judgeExist(playlistId,musicId);
+    }
 }

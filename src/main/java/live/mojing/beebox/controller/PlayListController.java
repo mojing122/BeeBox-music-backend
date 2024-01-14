@@ -163,4 +163,32 @@ public class PlayListController {
         else
             return RestBean.failure(404,"删除歌单失败!");
     }
+
+    @PostMapping("/add-music-to-list")
+    public RestBean<String> likeMusic(@RequestParam("playlistId") Integer playlistId,
+                                      @RequestParam("musicId") Integer musicId,
+                                      @RequestParam("flag") Boolean flag){
+        int exist=playListService.judgeExist(playlistId,musicId);
+
+        if(flag){
+            if(exist==0){
+                if(playListService.InsertMusic(playlistId,musicId)!=0)
+                    return RestBean.success("添加音乐成功!");
+                else
+                    return RestBean.failure(401,"添加音乐失败!");
+            }
+            else
+                return RestBean.failure(402,"该歌单中已经有该歌曲,请联系管理员!");
+        }
+        else{
+            if(exist!=0){
+                if(playListService.DeleteMusic(playlistId,musicId)!=0)
+                    return RestBean.success("删除音乐成功!");
+                else
+                    return RestBean.failure(403,"删除音乐失败!");
+            }
+            else
+                return RestBean.failure(404,"该歌单中没有该歌曲,无法删除音乐,请联系管理员!");
+        }
+    }
 }
