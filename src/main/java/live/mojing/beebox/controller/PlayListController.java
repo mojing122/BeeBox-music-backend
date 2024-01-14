@@ -164,7 +164,7 @@ public class PlayListController {
 
 
         // 指定要删除的文件路径
-        String filePath = SAVE_PATH+coverPath; // 例如："/home/user/images/pic1.jpg"
+        String filePath = SAVE_PATH+coverPath;
 
         // 创建File对象
         File file = new File(filePath);

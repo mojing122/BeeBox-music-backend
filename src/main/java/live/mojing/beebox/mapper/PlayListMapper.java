@@ -105,6 +105,14 @@ public interface PlayListMapper {
     int deletePlaylist(Integer playlistId,Integer accountId);
 
     /**
+     *  管理员删除歌单
+     * @param playlistId
+     * @return
+     */
+    @Delete("DELETE FROM db_playlist WHERE id = #{playlistId};")
+    int deletePlaylistByAdmin(Integer playlistId);
+
+    /**
      *  查询是否已经收藏
      * @param accountId
      * @param accountId

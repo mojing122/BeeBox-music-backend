@@ -6,9 +6,11 @@ import jakarta.servlet.http.HttpSession;
 import live.mojing.beebox.mapper.entity.Artist;
 import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
+import live.mojing.beebox.mapper.entity.PlayList;
 import live.mojing.beebox.mapper.entity.RestBean;
 import live.mojing.beebox.mapper.entity.user.AccountUser;
 import live.mojing.beebox.service.MusicService;
+import live.mojing.beebox.service.PlayListService;
 import org.apache.ibatis.binding.BindingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -129,5 +131,88 @@ public class AdminController {
             e.printStackTrace();
             return RestBean.failure(410,"数据库上传失败");
         }
+    }
+
+    @Autowired
+    private PlayListService playListService;
+    @PostMapping("/delete-playlist")
+    public RestBean<String> deletePlaylist(@RequestParam("playlistId") Integer playlistId)
+    {
+        PlayList playList=playListService.findPlaylistById(playlistId);
+        String coverPath=playList.getCover();
+        Integer flag=playListService.deletePlaylistByAdmin(playlistId);
+
+
+        // 指定要删除的文件路径
+        String filePath = SAVE_PATH+coverPath;
+
+        // 创建File对象
+        File file = new File(filePath);
+
+        // 判断文件是否存在
+        if (file.exists()) {
+            // 调用delete()方法来删除文件
+            if (file.delete()) {
+                System.out.println("歌单封面文件删除成功");
+            } else {
+                System.out.println("歌单封面文件删除失败");
+            }
+        } else {
+            System.out.println("歌单封面文件不存在");
+        }
+
+        if(flag!=0)
+            return RestBean.success("删除歌单成功!");
+        else
+            return RestBean.failure(404,"删除歌单失败!");
+    }
+
+    @PostMapping("/delete-music")
+    public RestBean<String> deleteMusic(@RequestParam("musicId") Integer musicId)
+    {
+        Music music=musicService.findMusicById(musicId);
+        String musicCoverPath=music.getCover();
+        String musicFilePath=music.getFileUrl();
+        Integer flag1=musicService.deleteMusicByAdmin(musicId);
+
+
+        // 指定要删除的文件路径
+        String coverPath = SAVE_PATH+musicCoverPath;
+        String filePath = SAVE_PATH+musicFilePath;
+
+        // 创建File对象
+        File cover = new File(coverPath);
+        File file  = new File(filePath);
+
+        //-----删除音乐封面文件------//
+        // 判断文件是否存在
+        if (cover.exists()) {
+            // 调用delete()方法来删除文件
+            if (cover.delete()) {
+                System.out.println("歌曲封面文件删除成功");
+            } else {
+                System.out.println("歌曲封面文件删除失败");
+            }
+        } else {
+            System.out.println("歌曲封面文件不存在");
+        }
+
+        //-----删除音乐文件------//
+        // 判断文件是否存在
+        if (file.exists()) {
+            // 调用delete()方法来删除文件
+            if (file.delete()) {
+                System.out.println("歌曲文件删除成功");
+            } else {
+                System.out.println("歌曲文件删除失败");
+            }
+        } else {
+            System.out.println("歌曲文件不存在");
+        }
+
+        if(flag1!=0)
+            return RestBean.success("删除歌曲成功!");
+        else
+            return RestBean.failure(404,"删除歌曲失败!");
     }
 }

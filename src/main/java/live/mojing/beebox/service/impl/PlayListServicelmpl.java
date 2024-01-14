@@ -5,6 +5,7 @@ import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
 import live.mojing.beebox.service.PlayListService;
+import org.hibernate.sql.ast.tree.expression.Over;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,10 @@ public class PlayListServicelmpl implements PlayListService {
     @Override
     public int deletePlaylist(Integer playlistId,Integer accountId){
         return playListMapper.deletePlaylist(playlistId,accountId);
+    }
+    @Override
+    public int deletePlaylistByAdmin(Integer playlistId){
+        return playListMapper.deletePlaylistByAdmin(playlistId);
     }
 
     @Override

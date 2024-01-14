@@ -22,9 +22,12 @@ public class MusicServiceImpl implements MusicService {
      * 音乐相关Service
      */
     @Override
-    public JudgedMusic findMusicById(Integer userid, Integer musicid) {
-        JudgedMusic music=musicMapper.findMusicById(userid,musicid);
-        return music;
+    public JudgedMusic findJudgedMusicById(Integer userid, Integer musicid) {
+        return musicMapper.findJudgedMusicById(userid,musicid);
+    }
+    @Override
+    public Music findMusicById(Integer musicId){
+        return musicMapper.findMusicById(musicId);
     }
 
     @Override
@@ -39,6 +42,11 @@ public class MusicServiceImpl implements MusicService {
         Date updateTime = new Date();
         int flag=musicMapper.insertMusic(name,cover,length,fileUrl,artistId,createTime,updateTime);
         return flag;
+    }
+
+    @Override
+    public int deleteMusicByAdmin(Integer musicId){
+        return musicMapper.deleteMusicByAdmin(musicId);
     }
 
     @Override

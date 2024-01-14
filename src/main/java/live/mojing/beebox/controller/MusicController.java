@@ -31,7 +31,7 @@ public class MusicController {
             @RequestParam("music_id") Integer musicId)
     {
         Integer userId=user.getId();
-        JudgedMusic music= musicService.findMusicById(userId,musicId);
+        JudgedMusic music= musicService.findJudgedMusicById(userId,musicId);
 
         return RestBean.success(music);
     }

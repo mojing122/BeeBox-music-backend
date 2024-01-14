@@ -16,7 +16,7 @@ public interface MusicMapper{
          *  根据用户id和音乐id查找音乐并判断该音乐是否被喜欢
          * @param accountid
          * @param musicid
-         * @return
+         * @return JudgedMusic
          */
         @Select("SELECT \n" +
                 "    m.id,\n" +
@@ -32,20 +32,15 @@ public interface MusicMapper{
                 "LEFT JOIN db_like l ON m.id = l.musicid AND l.accountid = #{accountid}\n" +
                 "LEFT JOIN db_artist a on m.artist_id=a.id\n" +
                 "WHERE m.id = #{musicid};")
-        JudgedMusic findMusicById(Integer accountid, Integer musicid);
+        JudgedMusic findJudgedMusicById(Integer accountid, Integer musicid);
 
         /**
-         *  插入音乐
-         * @param name
-         * @param cover
-         * @param length
-         * @param fileUrl
-         * @return
+         *  根据音乐id查找音乐
+         * @param musicId
+         * @return Music
          */
-        @Insert("insert into db_music (name,cover,length,file_url,artist_id,createTime,updateTime) \n" +
-                "values (#{name}, #{cover},#{length},#{fileUrl},#{artistId},#{createTime},#{updateTime})")
-        int insertMusic(String name, String cover, int length, String fileUrl,
-                        Integer artistId, Date createTime,Date updateTime);
+        @Select("select * from db_music where id =#{musicId}")
+        Music findMusicById(Integer musicId);
 
         /**
          *  通过音乐名查找音乐
@@ -68,6 +63,27 @@ public interface MusicMapper{
                 "LEFT JOIN db_artist a on m.artist_id=a.id\n" +
                 "WHERE m.name like CONCAT('%', #{musicName}, '%');")
         List<JudgedMusic> selectBytitle(String musicName,Integer accountId);
+
+        /**
+         *  插入音乐
+         * @param name
+         * @param cover
+         * @param length
+         * @param fileUrl
+         * @return
+         */
+        @Insert("insert into db_music (name,cover,length,file_url,artist_id,createTime,updateTime) \n" +
+                "values (#{name}, #{cover},#{length},#{fileUrl},#{artistId},#{createTime},#{updateTime})")
+        int insertMusic(String name, String cover, int length, String fileUrl,
+                        Integer artistId, Date createTime,Date updateTime);
+
+        /**
+         *  删除音乐
+         * @param musicId
+         * @return
+         */
+        @Delete("DELETE FROM db_music WHERE id = #{musicId};")
+        int deleteMusicByAdmin(Integer musicId);
 
         //----------like表相关操作----------//
         /**

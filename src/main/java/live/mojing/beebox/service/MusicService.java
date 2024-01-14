@@ -10,7 +10,9 @@ import java.util.List;
 @Service
 public interface MusicService{
 
-    JudgedMusic findMusicById(Integer userid, Integer musicid);
+    JudgedMusic findJudgedMusicById(Integer userid, Integer musicid);
+    Music findMusicById(Integer musicId);
+    int deleteMusicByAdmin(Integer musicId);
 
     int insertMusic(String name, String cover, int length, String fileUrl, Integer artistId);
 
