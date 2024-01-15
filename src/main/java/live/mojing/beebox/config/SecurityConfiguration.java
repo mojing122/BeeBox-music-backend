@@ -40,8 +40,8 @@ public class SecurityConfiguration {
         return http
                 // 配置请求的权限
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/index").hasRole("user")  // 用户角色为"user"可以访问 / 和 /index
-                        .requestMatchers("/api/user/**").hasRole("admin")  // 用户角色为 "admin"可以访问 /api/user/**
+                        .requestMatchers("/api/music/**","/api/playlist/**", "/api/user/**").hasRole("user")  // 用户角色为"user"可以访问
+                        .requestMatchers("/api/admin/**").hasRole("admin")  // 用户角色为 "admin"可以访问
                         .requestMatchers("/api/auth/**").permitAll()  // 所有用户都可以访问 /api/auth/**
                         .anyRequest().authenticated()  // 其他所有请求需要进行认证
                 )
@@ -79,6 +79,7 @@ public class SecurityConfiguration {
     /**
      * 配置跨域
      * @return source
+     * cors.addAllowedOriginPattern("http://music.mojing.live");
      */
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();

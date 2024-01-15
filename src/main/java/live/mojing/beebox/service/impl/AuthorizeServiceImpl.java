@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -50,11 +51,20 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         Account account = accountMapper.findAccountByNameOrEmail(username);
         if (account ==null)
             throw new UsernameNotFoundException("用户名或密码错误");
-        return User
-                .withUsername(account.getUsername())
-                .password(account.getPassword())
-                .roles("user","admin")
-                .build();
+        if(Objects.equals(account.getAccountrole(), "user"))
+            return User
+                    .withUsername(account.getUsername())
+                    .password(account.getPassword())
+                    .roles("user")
+                    .build();
+        if(Objects.equals(account.getAccountrole(), "admin"))
+            return User
+                    .withUsername(account.getUsername())
+                    .password(account.getPassword())
+                    .roles("user","admin")
+                    .build();
+        return User.withUsername(account.getUsername())
+                .password(account.getPassword()).build();
     }
 
     @Override

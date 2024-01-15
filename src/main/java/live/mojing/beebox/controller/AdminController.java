@@ -8,7 +8,9 @@ import live.mojing.beebox.mapper.entity.JudgedEntity.JudgedMusic;
 import live.mojing.beebox.mapper.entity.Music;
 import live.mojing.beebox.mapper.entity.PlayList;
 import live.mojing.beebox.mapper.entity.RestBean;
+import live.mojing.beebox.mapper.entity.auth.Account;
 import live.mojing.beebox.mapper.entity.user.AccountUser;
+import live.mojing.beebox.service.AccountService;
 import live.mojing.beebox.service.MusicService;
 import live.mojing.beebox.service.PlayListService;
 import org.apache.ibatis.binding.BindingException;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +33,9 @@ public class AdminController {
 
     @Autowired
     private MusicService musicService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Value("${local.path}")
     private String SAVE_PATH;
@@ -214,5 +220,23 @@ public class AdminController {
             return RestBean.success("删除歌曲成功!");
         else
             return RestBean.failure(404,"删除歌曲失败!");
+    }
+
+    @GetMapping("/get-user-list")
+    public RestBean<List<Account>> getUserList(){
+        List<Account> accountList = accountService.selectAllAccount();
+        return RestBean.success(accountList);
+    }
+
+    @PostMapping("/reset-account-role")
+    public RestBean<String> resetAccountRole(@RequestParam("role") String role,
+                                             @RequestParam("id") int id){
+        int response =accountService.resetRoleById(role, id);
+        if(response>0){
+            return RestBean.success("修改成功");
+        }else {
+            return RestBean.failure(407,"修改失败");
+        }
+
     }
 }
