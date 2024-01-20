@@ -129,7 +129,7 @@ public class SecurityConfiguration {
      */
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setCharacterEncoding("utf-8");
-        response.getWriter().write(JSONObject.toJSONString(RestBean.failure(401,authException.getMessage())));
+        response.getWriter().write(JSONObject.toJSONString(RestBean.failure(411,authException.getMessage())));
     }
 
     /**

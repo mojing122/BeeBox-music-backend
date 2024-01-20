@@ -24,6 +24,7 @@ public class MusicController {
     public RestBean<Integer> getMusicNum(){
         return RestBean.success(musicService.getMusicNum());
     }
+
     //搜索音乐信息
     @PostMapping("/get-music-by-id")
     public RestBean<JudgedMusic> selectMusicById(
