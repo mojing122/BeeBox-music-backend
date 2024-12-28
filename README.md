@@ -1,39 +1,41 @@
-# BeeBoxMusic（Backend）
+# BeeBoxMusic (Backend)
 
-基于 Vue+SpringBoot 的前后端分离项目，实现音乐播放，歌单管理等功能，并配有管理后台。
+[中文](https://github.com/mojing122/BeeBox-music-backend/blob/main/README_CN.md)
 
-前端项目地址：https://gitee.com/sha-zhiqing/bee-box-music
+A front-end and back-end separated project based on Vue+SpringBoot, implementing functions such as music playback, playlist management, and accompanied by an admin backend.
 
-## 开发计划：
-### 用户端
-- [x] 登陆/邮箱注册/忘记密码
-- [x] 音乐播放
-- [x] 点赞音乐
-- [x] 歌单创建/删除/添加删除音乐
-- [x] 搜索音乐
-- [x] 浏览其他用户创建的歌单
-- [x] 歌曲按点赞量排序
-- [ ] 推荐系统（音乐、歌单）
-- [ ] 评论功能
-- [ ] ……
+Front-end project address: [https://github.com/mojing122/BeeBox-music](https://github.com/mojing122/BeeBox-music)
 
-### 后台
-- [x] 歌单管理
-- [x] 歌曲管理
-- [x] 上传歌曲
-- [x] 账号权限管理
-- [ ] ……
+## Development Plan:
+### User End
+- [x] Login/Email Registration/Forgot Password
+- [x] Music Playback
+- [x] Like Music
+- [x] Playlist Creation/Deletion/Add and Remove Music
+- [x] Search Music
+- [x] Browse Playlists Created by Other Users
+- [x] Sort Songs by Likes
+- [ ] Recommendation System (Music, Playlists)
+- [ ] Comment Function
+- [ ] ...
 
-## 使用框架
-* vue3
+### Admin End
+- [x] Playlist Management
+- [x] Song Management
+- [x] Upload Songs
+- [x] Account and Permission Management
+- [ ] ...
+
+## Frameworks Used
+* Vue3
 * SpringBoot3
-* tailwindcss
+* TailwindCSS
 * Element Plus
-* axios
-* pinia
-* ……
-
+* Axios
+* Pinia
+* ...
 
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
